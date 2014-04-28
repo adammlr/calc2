@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<!-- saved from url=(0053)https://dl.dropboxusercontent.com/u/1037491/calc.html -->
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<!-- 	<link href="http://netdna.bootstrapcdn.com/bootswatch/3.1.1/darkly/bootstrap.min.css" rel="stylesheet" />
+-->  <link href="http://netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css" rel="stylesheet">
+<title>Loan Payment Calculator</title>
+<style type="text/css"></style></head>
+<body class=" hasGoogleVoiceExt">
+  <div class="container">
+    <h4>Loan Payment Calculator</h4>
+    <form class="form-horizontal" role="form">
+      <div class="form-group">
+        <label for="amount" class="col-sm-2 control-label">Loan Amount</label>
+        <div class="col-sm-3">
+          <input type="number" class="form-control" id="amount" min="1" value="12000">
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="rate" class="col-sm-2 control-label">Rate (%)</label>
+        <div class="col-sm-3">
+          <input type="number" class="form-control" id="rate" min="0" max="30" value="5.0">
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="term" class="col-sm-2 control-label">Term (years)</label>
+        <div class="col-sm-3">
+          <input type="number" class="form-control" id="term" min="1" max="30" value="4">
+        </div>
+      </div>
+
+      <div class="form-group well">
+        <label for="result" class="col-sm-2 control-label">Monthly Payment</label>
+        <div class="col-sm-3">
+          <input type="text" class="form-control" id="result">
+        </div>
+      </div>
+    </form>
+  </div>
+  <script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
+  <script src="http://netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
+  <script>
+    $(function(){
+      Calc();
+      $('#amount').focus();
+      $('input').on('change keyup paste', Calc);
+    });
+
+    function Calc() {
+      $('#result').val(CalculatePayments($('#amount').val(), $('#rate').val(), $('#term').val()));
+    }
+
+    function CalculatePayments(loan, rate, term) {
+      return ((loan * (rate / 100 / 12)) / (1 - Math.pow(1 + (rate / 100 / 12), - (term * 12)))).toFixed(2);
+    }
+  </script>
+
+</body></html>
