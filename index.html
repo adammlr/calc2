@@ -13,7 +13,7 @@
             <h4>Loan Payment Calculator</h4>
             <form class="form-horizontal" role="form">
                 <div class="form-group">
-                    <label for="amount" class="col-sm-2 control-label">Loan Amount</label>
+                    <label for="amount" class="col-sm-2 control-label">Loan Amount ($)</label>
                     <div class="col-sm-3">
                         <input type="number" class="form-control" id="amount" min="1" value="12000" pattern="[0-9]">
                     </div>
@@ -30,10 +30,17 @@
                         <input type="number" class="form-control" id="term" min="1" max="30" value="4" pattern="[0-9]">
                     </div>
                 </div>
-                <div class="form-group well">
-                    <label for="result" class="col-sm-2 control-label">Monthly Payment</label>
+                <hr>
+                <div class="form-group">
+                    <label for="monthlyPayment" class="col-sm-2 control-label">Monthly Payment ($)</label>
                     <div class="col-sm-3">
-                        <input type="text" class="form-control" id="result">
+                        <input type="text" class="form-control" id="monthlyPayment">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="totalInterest" class="col-sm-2 control-label">Total Interest ($)</label>
+                    <div class="col-sm-3">
+                        <input type="text" class="form-control" id="totalInterest">
                     </div>
                 </div>
             </form>
@@ -41,16 +48,22 @@
         <script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
         <script src="http://netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
         <script>
-            $(function(){
-              Calc();
-              $('#amount').focus();
-              $('input').on('change keyup paste', Calc);
+            $(function () {
+                Calc();
+                $('#amount').focus();
+                $('input').on('change keyup paste', Calc);
             });
             function Calc() {
-              $('#result').val(CalculatePayments($('#amount').val(), $('#rate').val(), $('#term').val()));
+                var payments = CalculatePayments($('#amount').val(), $('#rate').val(), $('#term').val());
+                $('#monthlyPayment').val(payments.monthlyPayment);
+                $('#totalInterest').val(payments.totalInterest);
             }
             function CalculatePayments(loan, rate, term) {
-              return ((loan * (rate / 100 / 12)) / (1 - Math.pow(1 + (rate / 100 / 12), - (term * 12)))).toFixed(2);
+                var result = {};
+                result.monthlyPayment = ((loan * (rate / 100 / 12)) / (1 - Math.pow(1 + (rate / 100 / 12), -(term * 12))));
+                result.totalInterest = ((result.monthlyPayment * term * 12) - loan).toFixed(2);
+                result.monthlyPayment = result.monthlyPayment.toFixed(2);
+                return result;
             }
         </script>
     </body>
